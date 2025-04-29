@@ -91,6 +91,12 @@ const MenuPage = () => {
     }
   };
 
+  // Clear cart (for use after successful order)
+  const clearCart = () => {
+    setCart([]);
+    setIsCartOpen(false);
+  };
+
   // Calculate total items in cart
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
@@ -117,6 +123,7 @@ const MenuPage = () => {
         onClose={() => setIsCartOpen(false)} 
         cartItems={cart}
         updateQuantity={updateCartItemQuantity}
+        clearCart={clearCart}
       />
 
       <div className="container mx-auto px-4 py-8">
