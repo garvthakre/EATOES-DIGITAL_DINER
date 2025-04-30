@@ -33,7 +33,7 @@ const Login = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         
         // Redirect to home page
-        navigate("/home");
+        navigate("/menu");
       } else {
         setError(data.error || "Login failed. Please try again.");
       }

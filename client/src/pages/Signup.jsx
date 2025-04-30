@@ -38,8 +38,8 @@ const Signup = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         
-        // Redirect to home page
-        navigate("/home");
+        // Redirect to  Menu page
+        navigate("/menu");
       } else {
         setError(data.error || "Signup failed. Please try again.");
       }

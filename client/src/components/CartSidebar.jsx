@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
   // Calculate total amount
@@ -15,6 +15,28 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
   const [orderError, setOrderError] = useState('');
   const [orderId, setOrderId] = useState(null);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [user, setUser] = useState(null);
+  
+  // Get user info from localStorage when component mounts
+  useEffect(() => {
+    try {
+      const userJson = localStorage.getItem('user');
+      if (userJson) {
+        const userData = JSON.parse(userJson);
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error('Error parsing user data from localStorage', error);
+    }
+  }, []);
+  
+  // Pre-fill contact form when user data is available and form is shown
+  useEffect(() => {
+    if (user && showContactForm) {
+      setContactName(user.name || '');
+      setContactPhone(user.phone || '');
+    }
+  }, [user, showContactForm]);
   
   // Handle checkout process
   const handleCheckout = async () => {
@@ -36,6 +58,9 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
       setIsSubmitting(true);
       setOrderError('');
       
+      // Get user ID if logged in
+      const userId = user?._id;
+      
       // Prepare order data
       const orderData = {
         items: cartItems.map(item => ({
@@ -45,16 +70,16 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
         })),
         contactName,
         contactPhone,
-        // If you have user authentication, you can include userId here
-        // userId: currentUser?._id,
-        pickupTime: null // You could add a pickup time selector if needed
+        userId, 
+         
       };
       
-      // Make API call to create order
+      
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Add auth token if available
         },
         body: JSON.stringify(orderData)
       });
