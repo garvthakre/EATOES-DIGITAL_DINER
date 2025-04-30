@@ -1,27 +1,36 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import LandingPage from "./pages/LandingPage";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import MenuPage from "./pages/MenuPage";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+
  
-import PrivateRoute from "./components/PrivateRoute";
+import Menu from './pages/MenuPage';
+import OrderLookup from './pages/OrderLookup';
+import OrderDetails from './pages/OrderDetails';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import LandingPage from './pages/LandingPage';
+ 
  
 
 function App() {
   return (
-    <BrowserRouter>
-   
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<h1 className="text-red-600">Page Not Found</h1>} />
-      </Routes>
-       
-    </BrowserRouter>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow bg-gray-50">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/order-lookup" element={<OrderLookup />} />
+            <Route path="/order/:id" element={<OrderDetails />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+             
+            
+          </Routes>
+        </main>
+         
+      </div>
+    </Router>
   );
 }
 

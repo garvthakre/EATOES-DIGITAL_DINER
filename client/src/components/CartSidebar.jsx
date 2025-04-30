@@ -17,7 +17,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
   const [showContactForm, setShowContactForm] = useState(false);
   const [user, setUser] = useState(null);
   
-  // Get user info from localStorage when component mounts
+  
   useEffect(() => {
     try {
       const userJson = localStorage.getItem('user');
@@ -30,7 +30,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
     }
   }, []);
   
-  // Pre-fill contact form when user data is available and form is shown
+  
   useEffect(() => {
     if (user && showContactForm) {
       setContactName(user.name || '');
@@ -42,7 +42,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
     
-    // Show contact form if not already showing
+    
     if (!showContactForm) {
       setShowContactForm(true);
       return;
@@ -57,11 +57,10 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
     try {
       setIsSubmitting(true);
       setOrderError('');
-      
-      // Get user ID if logged in
+       
       const userId = user?._id;
       
-      // Prepare order data
+    
       const orderData = {
         items: cartItems.map(item => ({
           menuItemId: item._id,
@@ -79,7 +78,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Add auth token if available
+          'Authorization': `Bearer ${localStorage.getItem('token')}` 
         },
         body: JSON.stringify(orderData)
       });
@@ -91,12 +90,11 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
       
       const orderResult = await response.json();
       
-      // Handle successful order
+      
       setOrderSuccess(true);
       setOrderId(orderResult.id);
       
-      // You might want to clear the cart here or handle that at a higher level
-      
+    
     } catch (error) {
       console.error('Checkout error:', error);
       setOrderError(error.message || 'An error occurred during checkout');
@@ -105,7 +103,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
     }
   };
   
-  // Reset the form
+  
   const handleNewOrder = () => {
     setOrderSuccess(false);
     setOrderId(null);
@@ -113,7 +111,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
     setContactPhone('');
     setShowContactForm(false);
     onClose();
-    // You would typically clear the cart here
+     
   };
   
   return (
@@ -157,7 +155,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
         </div>
       ) : (
         <>
-          {/* Cart items */}
+           
           <div className="flex-1 overflow-y-auto p-4">
             {cartItems.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-gray-500">
@@ -171,7 +169,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
                 {cartItems.map(item => (
                   <li key={item._id} className="py-4">
                     <div className="flex items-center">
-                      {/* Item image (small thumbnail) */}
+                       
                       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-100">
                         {item.imageUrl ? (
                           <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
@@ -182,13 +180,13 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
                         )}
                       </div>
                       
-                      {/* Item details */}
+                     
                       <div className="ml-4 flex-1">
                         <h3 className="text-sm font-medium text-gray-900">{item.name}</h3>
                         <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
                       </div>
                       
-                      {/* Quantity controls */}
+                       
                       <div className="flex items-center">
                         <button 
                           onClick={() => updateQuantity(item._id, item.quantity - 1)}
@@ -208,8 +206,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
                           </svg>
                         </button>
                       </div>
-                      
-                      {/* Item subtotal */}
+                 
                       <div className="ml-4 text-sm font-medium text-gray-900">
                         ${(item.price * item.quantity).toFixed(2)}
                       </div>
@@ -220,7 +217,7 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
             )}
           </div>
           
-          {/* Contact form when checkout is initiated */}
+           
           {showContactForm && cartItems.length > 0 && (
             <div className="p-4 border-t">
               <h3 className="font-medium mb-3">Contact Information</h3>
@@ -251,14 +248,13 @@ const CartSidebar = ({ isOpen, onClose, cartItems, updateQuantity }) => {
             </div>
           )}
           
-          {/* Error message */}
+    
           {orderError && (
             <div className="px-4 pb-2 text-red-500 text-sm">
               {orderError}
             </div>
           )}
-          
-          {/* Cart footer with total and checkout button */}
+        
           <div className="border-t p-4">
             <div className="flex justify-between mb-4">
               <span className="font-bold">Total:</span>

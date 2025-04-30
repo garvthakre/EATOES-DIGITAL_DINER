@@ -60,7 +60,7 @@ export const getMenuItemById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching menu item:", error);
     
-    // Check if error is due to invalid ObjectId
+     
     if (error.kind === 'ObjectId') {
       return res.status(400).json({ error: "Invalid menu item ID" });
     }
@@ -120,8 +120,7 @@ export const updateMenuItem = async (req, res) => {
     res.json(updatedMenuItem);
   } catch (error) {
     console.error("Error updating menu item:", error);
-    
-    // Check if error is due to invalid ObjectId
+     
     if (error.kind === 'ObjectId') {
       return res.status(400).json({ error: "Invalid menu item ID" });
     }

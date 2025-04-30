@@ -7,7 +7,7 @@ export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Verify user ID matches authenticated user or is admin
+    
     if (req.user.id !== id) {
       return res.status(403).json({ error: "Not authorized to access this user's data" });
     }
@@ -18,7 +18,7 @@ export const getUserById = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     
-    // Get user's recent orders
+     
     const orderResult = await pool.query(
       `SELECT id, order_date, total_amount, status
        FROM orders 
@@ -28,7 +28,7 @@ export const getUserById = async (req, res) => {
       [id]
     );
     
-    // Return user with recent orders
+  
     res.json({
       user,
       recentOrders: orderResult.rows
@@ -36,7 +36,6 @@ export const getUserById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching user details:", error);
     
-    // Check if error is due to invalid ObjectId
     if (error.kind === 'ObjectId') {
       return res.status(400).json({ error: "Invalid user ID" });
     }
@@ -51,7 +50,7 @@ export const updateUser = async (req, res) => {
     const { id } = req.params;
     const { name, email, phone, currentPassword, newPassword } = req.body;
     
-    // Verify user ID matches authenticated user or is admin
+     
     if (req.user.id !== id) {
       return res.status(403).json({ error: "Not authorized to update this user" });
     }
@@ -63,12 +62,12 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     
-    // Update user fields if provided
+    
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
     
-    // Handle password change if requested
+ 
     if (newPassword && currentPassword) {
       // Verify current password
       const isPasswordValid = await bcrypt.compare(currentPassword, user.password);

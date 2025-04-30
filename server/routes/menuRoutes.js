@@ -18,8 +18,6 @@ router.get("/categories", getMenuCategories);
 router.get("/category/:id", getMenuItemsByCategory);
 router.get("/item/:id", getMenuItemById);
 
-// Protected routes for admin menu management
-// In a real application, these would have additional admin middleware
 router.post("/", protect, createMenuItem);
 router.put("/item/:id", protect, updateMenuItem);
 router.delete("/item/:id", protect, deleteMenuItem);
