@@ -10,17 +10,17 @@ import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const app = express();
-
+app.use(express.json()); 
 // Middleware
 app.use(cors({
   origin: function(origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
-    // Allow localhost and netlify domains
+     
     const allowedOrigins = [
       'http://localhost:3000',
       /https:\/\/.*\.netlify\.app$/,
+      'http://localhost:5173',
       process.env.CLIENT_URL // Add your specific production URL here
     ];
     
